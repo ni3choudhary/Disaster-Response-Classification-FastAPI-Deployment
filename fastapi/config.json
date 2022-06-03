@@ -1,4 +1,5 @@
 
 {
-    "TRAINED_MODEL": "assets/classifier.pkl"
+    "TRAINED_MODEL": "assets/classifier.pkl",
+    "DATABASE" : "assets/DisasterResponse.db"
 }
