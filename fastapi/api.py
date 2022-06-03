@@ -1,4 +1,5 @@
 # Importing Required Libraries
+import os
 import sys
 from fastapi import FastAPI,Form, Request
 from fastapi.templating import Jinja2Templates
@@ -14,6 +15,10 @@ from sqlalchemy import create_engine
 with open("./config.json") as json_file:
     config = json.load(json_file)
 
+# fetching assets path to use tokenizer and model
+dir_name, file_name = os.path.split(os.path.abspath(__file__))
+assets_path = os.path.join(dir_name, "assets")
+
 # instantiate an app
 app = FastAPI()
 
@@ -24,12 +29,12 @@ templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # load data from database
-database_filepath = '../database/DisasterResponse.db'
+database_filepath = config["DATABASE"]
 engine = create_engine(f"sqlite:///{database_filepath}")
 df = pd.read_sql_table("messages", engine)
 
 # load model from pickle file
-sys.path.append("C:/Users/Nitin/DataScience/Projects_for_practice/Disaster-Response-Classification-Flask-API-Deployment/models")
+sys.path.append(assets_path)
 model = joblib.load(config["TRAINED_MODEL"])
 
 
